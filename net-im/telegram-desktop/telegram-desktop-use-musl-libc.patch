@@ -1,0 +1,81 @@
+--- a/Telegram/CMakeLists.txt
++++ b/Telegram/CMakeLists.txt
+@@ -1256,10 +1256,6 @@
+         endif()
+     endif()
+ else()
+-    target_link_libraries(Telegram
+-    PRIVATE
+-        desktop-app::external_jemalloc
+-    )
+ 
+     if (NOT DESKTOP_APP_DISABLE_DBUS_INTEGRATION)
+         target_link_libraries(Telegram
+--- a/Telegram/SourceFiles/platform/linux/specific_linux.cpp
++++ b/Telegram/SourceFiles/platform/linux/specific_linux.cpp
+@@ -49,8 +49,6 @@
+ 
+ #ifdef Q_OS_FREEBSD
+ #include <malloc_np.h>
+-#else // Q_OS_FREEBSD
+-#include <jemalloc/jemalloc.h>
+ #endif // Q_OS_FREEBSD
+ 
+ #ifndef DESKTOP_APP_DISABLE_DBUS_INTEGRATION
+@@ -659,8 +659,6 @@
+ namespace Platform {
+ 
+ void start() {
+-	auto backgroundThread = true;
+-	mallctl("background_thread", nullptr, nullptr, &backgroundThread, sizeof(bool));
+ 
+ 	// Prevent any later calls into setlocale() by Qt
+ 	QCoreApplicationPrivate::initLocale();
+--- a/cmake/external/CMakeLists.txt
++++ b/cmake/external/CMakeLists.txt
+@@ -37,9 +37,6 @@
+ 	add_checked_subdirectory(hunspell)
+ endif()
+ add_checked_subdirectory(iconv)
+-if (LINUX)
+-    add_checked_subdirectory(jemalloc)
+-endif()
+ add_checked_subdirectory(jpeg)
+ if (LINUX AND NOT DESKTOP_APP_DISABLE_WAYLAND_INTEGRATION)
+     add_checked_subdirectory(kwayland)
+--- a/Telegram/lib_base/base/platform/linux/base_info_linux.cpp
++++ b/Telegram/lib_base/base/platform/linux/base_info_linux.cpp
+@@ -16,10 +16,6 @@
+ #include <QtCore/QDate>
+ #include <QtGui/QGuiApplication>
+ 
+-#ifdef Q_OS_LINUX
+-#include <gnu/libc-version.h>
+-#endif // Q_OS_LINUX
+-
+ namespace Platform {
+ namespace {
+ 
+@@ -109,22 +105,10 @@
+ }
+ 
+ QString GetLibcName() {
+-#ifdef Q_OS_LINUX
+-	return "glibc";
+-#endif // Q_OS_LINUX
+-
+ 	return QString();
+ }
+ 
+ QString GetLibcVersion() {
+-#ifdef Q_OS_LINUX
+-	static const auto result = [&] {
+-		const auto version = QString::fromLatin1(gnu_get_libc_version());
+-		return QVersionNumber::fromString(version).isNull() ? QString() : version;
+-	}();
+-	return result;
+-#endif // Q_OS_LINUX
+-
+ 	return QString();
+ }
+ 

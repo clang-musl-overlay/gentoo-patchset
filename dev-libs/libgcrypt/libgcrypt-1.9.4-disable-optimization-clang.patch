@@ -1,0 +1,18 @@
+--- a/random/jitterentropy-base.c
++++ b/random/jitterentropy-base.c
+@@ -51,9 +51,14 @@
+ 
+ #undef _FORTIFY_SOURCE
+ #ifdef __OPTIMIZE__
+-#pragma GCC optimize ("O0")
++  #if defined __clang__
++    #pragma clang optimize off
++    #undef __OPTIMIZE__
++  #elif defined __GNUC__
++    #pragma GCC optimize ("O0")
++  #endif
+ #endif
+ 
+ #include "jitterentropy.h"
+ 
+ #ifndef CONFIG_CRYPTO_CPU_JITTERENTROPY_STAT

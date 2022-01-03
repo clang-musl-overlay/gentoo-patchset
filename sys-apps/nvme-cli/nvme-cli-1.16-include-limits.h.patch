@@ -1,0 +1,10 @@
+--- a/nvme-topology.c
++++ b/nvme-topology.c
+@@ -3,6 +3,7 @@
+ #include <errno.h>
+ #include <unistd.h>
+ #include <fcntl.h>
++#include <limits.h>
+ #include <sys/stat.h>
+ #include <sys/mman.h>
+ 

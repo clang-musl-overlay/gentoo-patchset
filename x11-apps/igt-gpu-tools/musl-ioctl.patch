@@ -1,0 +1,22 @@
+diff --git a/benchmarks/gem_exec_tracer.c b/benchmarks/gem_exec_tracer.c
+index c8f4e84b..dc9cad12 100644
+--- a/benchmarks/gem_exec_tracer.c
++++ b/benchmarks/gem_exec_tracer.c
+@@ -42,7 +42,7 @@
+ #include "intel_chipset.h"
+ 
+ static int (*libc_close)(int fd);
+-static int (*libc_ioctl)(int fd, unsigned long request, void *argp);
++static int (*libc_ioctl)(int fd, int request, void *argp);
+ 
+ static pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
+ 
+@@ -270,7 +270,7 @@ static int is_i915(int fd)
+     DRM_IOWR(DRM_COMMAND_BASE + DRM_I915_GEM_EXECBUFFER2, struct drm_i915_gem_execbuffer2)
+ 
+ int
+-ioctl(int fd, unsigned long request, ...)
++ioctl(int fd, int request, ...)
+ {
+ 	struct trace *t, **p;
+ 	va_list args;

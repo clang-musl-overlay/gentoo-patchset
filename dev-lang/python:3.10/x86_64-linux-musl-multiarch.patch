@@ -1,0 +1,30 @@
+From 82bf05d215dfcc2ef779395bf79b5fc23d5b9555 Mon Sep 17 00:00:00 2001
+From: Natanael Copa <ncopa@alpinelinux.org>
+Date: Wed, 10 Feb 2021 18:36:04 +0100
+Subject: [PATCH] bpo-43112: detect musl as a separate SOABI
+
+musl libc and gnu libc are not ABI compatible so we need set different
+SOABI for musl and not simply assume that all linux is linux-gnu.
+
+Replace linux-gnu with the detected os for the build from config.guess
+for linux-musl*.
+---
+ configure.ac | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/configure.ac b/configure.ac
+index 60c5d8e0b5b0..0e6b61708012 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -860,6 +860,11 @@ EOF
+ 
+ if $CPP $CPPFLAGS conftest.c >conftest.out 2>/dev/null; then
+   PLATFORM_TRIPLET=`grep -v '^#' conftest.out | grep -v '^ *$' | tr -d ' 	'`
++  case "$build_os" in
++  linux-musl*)
++    PLATFORM_TRIPLET=`echo "$PLATFORM_TRIPLET" | sed 's/linux-gnu/linux-musl/'`
++    ;;
++  esac
+   AC_MSG_RESULT([$PLATFORM_TRIPLET])
+ else
+   AC_MSG_RESULT([none])

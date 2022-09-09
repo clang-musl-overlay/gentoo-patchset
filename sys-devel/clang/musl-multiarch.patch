@@ -12,7 +12,7 @@ index af75b8f07..39f8c1363 100644
    bool IsMipsR6 = TargetTriple.getSubArch() == llvm::Triple::MipsSubArch_r6;
    bool IsMipsN32Abi = TargetTriple.getEnvironment() == llvm::Triple::GNUABIN32;
  
-@@ -58,78 +59,66 @@ std::string Linux::getMultiarchTriple(const Driver &D,
+@@ -59,80 +59,68 @@ std::string Linux::getMultiarchTriple(const Driver &D,
    // regardless of what the actual target triple is.
    case llvm::Triple::arm:
    case llvm::Triple::thumb:
@@ -58,21 +58,21 @@ index af75b8f07..39f8c1363 100644
  
    case llvm::Triple::mips:
 -    return IsMipsR6 ? "mipsisa32r6-linux-gnu" : "mips-linux-gnu";
-+    return (IsMipsR6 ? "mipsisa32r6-linux-" : "mips-linux-") + EnvName;
++    return IsMipsR6 ? "mipsisa32r6-linux-" + EnvName : "mips-linux-" + EnvName;
    case llvm::Triple::mipsel:
 -    if (IsAndroid)
 -      return "mipsel-linux-android";
 -    return IsMipsR6 ? "mipsisa32r6el-linux-gnu" : "mipsel-linux-gnu";
-+    return (IsMipsR6 ? "mipsisa32r6el-linux-" : "mipsel-linux-") + EnvName;
++    return IsMipsR6 ? "mipsisa32r6el-linux-" + EnvName : "mipsel-linux-" + EnvName;
    case llvm::Triple::mips64: {
      std::string MT = std::string(IsMipsR6 ? "mipsisa64r6" : "mips64") +
 -                     "-linux-" + (IsMipsN32Abi ? "gnuabin32" : "gnuabi64");
 +                     "-linux-" + EnvName + (IsMipsN32Abi ? "abin32" : "abi64");
-     if (D.getVFS().exists(SysRoot + "/lib/" + MT))
+     if (D.getVFS().exists(concat(SysRoot, "/lib", MT)))
        return MT;
--    if (D.getVFS().exists(SysRoot + "/lib/mips64-linux-gnu"))
+-    if (D.getVFS().exists(concat(SysRoot, "/lib/mips64-linux-gnu")))
 -      return "mips64-linux-gnu";
-+    if (D.getVFS().exists(SysRoot + "/lib/mips64-linux-" + EnvName))
++    if (D.getVFS().exists(concat(SysRoot, "/lib/mips64-linux-" + EnvName)))
 +      return "mips64-linux-" + EnvName;
      break;
    }
@@ -82,19 +82,19 @@ index af75b8f07..39f8c1363 100644
      std::string MT = std::string(IsMipsR6 ? "mipsisa64r6el" : "mips64el") +
 -                     "-linux-" + (IsMipsN32Abi ? "gnuabin32" : "gnuabi64");
 +                     "-linux-" + EnvName + (IsMipsN32Abi ? "abin32" : "abi64");
-     if (D.getVFS().exists(SysRoot + "/lib/" + MT))
+     if (D.getVFS().exists(concat(SysRoot, "/lib", MT)))
        return MT;
--    if (D.getVFS().exists(SysRoot + "/lib/mips64el-linux-gnu"))
+-    if (D.getVFS().exists(concat(SysRoot, "/lib/mips64el-linux-gnu")))
 -      return "mips64el-linux-gnu";
-+    if (D.getVFS().exists(SysRoot + "/lib/mips64el-linux-" + EnvName))
++    if (D.getVFS().exists(concat(SysRoot, "/lib/mips64el-linux-" + EnvName)))
 +      return "mips64el-linux-" + EnvName;
      break;
    }
    case llvm::Triple::ppc:
--    if (D.getVFS().exists(SysRoot + "/lib/powerpc-linux-gnuspe"))
+-    if (D.getVFS().exists(concat(SysRoot, "/lib/powerpc-linux-gnuspe")))
 -      return "powerpc-linux-gnuspe";
 -    return "powerpc-linux-gnu";
-+    if (D.getVFS().exists(SysRoot + "/lib/powerpc-linux-" + EnvName + "spe"))
++    if (D.getVFS().exists(concat(SysRoot, "/lib/powerpc-linux-" + EnvName + "spe")))
 +      return "powerpc-linux-" + EnvName + "spe";
 +    return "powerpc-linux-" + EnvName;
    case llvm::Triple::ppcle:
@@ -106,6 +106,9 @@ index af75b8f07..39f8c1363 100644
    case llvm::Triple::ppc64le:
 -    return "powerpc64le-linux-gnu";
 +    return "powerpc64le-linux-" + EnvName;
+   case llvm::Triple::riscv64:
+-    return "riscv64-linux-gnu";
++    return "riscv64-linux-" + EnvName;
    case llvm::Triple::sparc:
 -    return "sparc-linux-gnu";
 +    return "sparc-linux-" + EnvName;

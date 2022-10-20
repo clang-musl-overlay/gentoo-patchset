@@ -1,0 +1,13 @@
+diff --git a/common/asm-x86_64.h b/common/asm-x86_64.h
+index b4713d7..1f13ba3 100644
+--- a/common/asm-x86_64.h
++++ b/common/asm-x86_64.h
+@@ -284,7 +284,7 @@
+ #define EH_FRAME_SECTION .eh_frame,"a",@progbits
+ #else
+ // Linux/ELF
+-#define EH_FRAME_SECTION .eh_frame,"aw",@progbits
++#define EH_FRAME_SECTION .eh_frame,"a",@progbits
+ #endif
+ #endif
+ #endif

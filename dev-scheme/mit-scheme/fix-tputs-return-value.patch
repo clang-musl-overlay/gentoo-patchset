@@ -1,0 +1,13 @@
+diff --git a/microcode/termcap.c b/microcode/termcap.c
+index 751d4d7..1ad6616 100644
+--- a/microcode/termcap.c
++++ b/microcode/termcap.c
+@@ -335,7 +335,7 @@ tputs (string, nlines, outfun)
+   int padcount = 0;
+ 
+   if (string == (char *) 0)
+-    return;
++    return 0;
+   while (*string >= '0' && *string <= '9')
+     {
+       padcount += *string++ - '0';

@@ -6,7 +6,7 @@ index 47c2cb4..0a25c28 100644
  
  G_DEFINE_TYPE (ConsoleInteraction, console_interaction, G_TYPE_TLS_INTERACTION);
  
-+#if !defined(_GNU_SOURCE) || !defined(_BSD_SOURCE)
++#if !defined(_GNU_SOURCE) && !defined(_BSD_SOURCE)
 +char *getpass(const char *);
 +#endif
 +

@@ -1,0 +1,11 @@
+--- aria2-1.36.0/src/ConsoleStatCalc.h.orig	2023-04-08 12:33:46.340526519 +0200
++++ aria2-1.36.0/src/ConsoleStatCalc.h	2023-04-08 12:34:02.670526907 +0200
+@@ -45,7 +45,7 @@
+ 
+ namespace aria2 {
+ 
+-class SizeFormatter : public std::unary_function<int64_t, std::string> {
++class SizeFormatter : public std::__unary_function<int64_t, std::string> {
+ protected:
+   virtual std::string format(int64_t size) const = 0;
+ 

@@ -1,0 +1,11 @@
+--- aria2-1.36.0/src/a2functional.h.orig	2023-04-08 12:32:36.754524865 +0200
++++ aria2-1.36.0/src/a2functional.h	2023-04-08 12:33:06.464525571 +0200
+@@ -103,7 +103,7 @@
+ }
+ 
+ template <typename T>
+-class LeastRecentAccess : public std::binary_function<T, T, bool> {
++class LeastRecentAccess : public std::__binary_function<T, T, bool> {
+ public:
+   bool operator()(const std::shared_ptr<T>& lhs,
+                   const std::shared_ptr<T>& rhs) const

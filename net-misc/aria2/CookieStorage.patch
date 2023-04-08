@@ -1,0 +1,11 @@
+--- aria2-1.36.0/src/CookieStorage.cc.orig	2023-04-08 12:32:50.378525189 +0200
++++ aria2-1.36.0/src/CookieStorage.cc	2023-04-08 12:33:15.612525788 +0200
+@@ -352,7 +352,7 @@
+ } // namespace
+ 
+ namespace {
+-class OrderByPathDepthDesc : public std::binary_function<Cookie, Cookie, bool> {
++class OrderByPathDepthDesc : public std::__binary_function<Cookie, Cookie, bool> {
+ public:
+   bool operator()(const CookiePathDivider& lhs,
+                   const CookiePathDivider& rhs) const

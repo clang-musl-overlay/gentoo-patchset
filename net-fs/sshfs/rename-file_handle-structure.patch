@@ -1,0 +1,55 @@
+diff --git a/cache.c b/cache.c
+index 9436c5a..3672f7a 100644
+--- a/cache.c
++++ b/cache.c
+@@ -55,7 +55,7 @@ struct readdir_handle {
+ 	uint64_t wrctr;
+ };
+ 
+-struct file_handle {
++struct io_file_handle {
+ 	/* Did we send an open request to the underlying fs? */
+ 	int is_open;
+ 
+@@ -304,9 +304,9 @@ static int cache_readlink(const char *path, char *buf, size_t size)
+ static int cache_opendir(const char *path, struct fuse_file_info *fi)
+ {
+ 	(void) path;
+-	struct file_handle *cfi;
++	struct io_file_handle *cfi;
+ 
+-	cfi = malloc(sizeof(struct file_handle));
++	cfi = malloc(sizeof(struct io_file_handle));
+ 	if(cfi == NULL)
+ 		return -ENOMEM;
+ 	cfi->is_open = 0;
+@@ -317,9 +317,9 @@ static int cache_opendir(const char *path, struct fuse_file_info *fi)
+ static int cache_releasedir(const char *path, struct fuse_file_info *fi)
+ {
+ 	int err;
+-	struct file_handle *cfi;
++	struct io_file_handle *cfi;
+ 
+-	cfi = (struct file_handle*) fi->fh;
++	cfi = (struct io_file_handle*) fi->fh;
+ 
+ 	if(cfi->is_open) {
+ 		fi->fh = cfi->fs_fh;
+@@ -359,7 +359,7 @@ static int cache_readdir(const char *path, void *buf, fuse_fill_dir_t filler,
+ 			 enum fuse_readdir_flags flags)
+ {
+ 	struct readdir_handle ch;
+-	struct file_handle *cfi;
++	struct io_file_handle *cfi;
+ 	int err;
+ 	char **dir;
+ 	struct node *node;
+@@ -380,7 +380,7 @@ static int cache_readdir(const char *path, void *buf, fuse_fill_dir_t filler,
+ 	}
+ 	pthread_mutex_unlock(&cache.lock);
+ 
+-	cfi = (struct file_handle*) fi->fh;
++	cfi = (struct io_file_handle*) fi->fh;
+ 	if(cfi->is_open)
+ 		fi->fh = cfi->fs_fh;
+ 	else {

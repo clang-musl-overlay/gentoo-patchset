@@ -1,0 +1,32 @@
+--- Tk-804.036/pTk/Xlib.t.orig
++++ Tk-804.036/pTk/Xlib.t
+@@ -331,7 +331,7 @@
+ #endif /* !DO_X_EXCLUDE */
+
+ #ifndef XKeycodeToKeysym
+-VFUNC(KeySym,XKeycodeToKeysym,V_XKeycodeToKeysym,_ANSI_ARGS_((Display *, unsigned int, int)))
++VFUNC(KeySym,(KeySym (*)(Display *, unsigned int, int)) XKeycodeToKeysym,V_XKeycodeToKeysym,_ANSI_ARGS_((Display *, unsigned int, int)))
+ #endif /* #ifndef XKeycodeToKeysym */
+
+ #ifndef XKeysymToString
+--- Tk-804.036/pTk/tkIntXlibDecls.t.orig
++++ Tk-804.036/pTk/tkIntXlibDecls.t
+@@ -745,15 +745,15 @@
+ 
+ #ifndef XKeycodeToKeysym
+ #ifdef MAC_OSX_TK
+-VFUNC(KeySym,XKeycodeToKeysym,V_XKeycodeToKeysym,_ANSI_ARGS_((Display* d, KeyCode k,
++VFUNC(KeySym,(KeySym (*)(Display *, unsigned int, int))XKeycodeToKeysym,V_XKeycodeToKeysym,_ANSI_ARGS_((Display* d, KeyCode k,
+ 				int i)))
+ #endif /* #ifdef MAC_OSX_TK */
+ #ifdef MAC_TCL
+-VFUNC(KeySym,XKeycodeToKeysym,V_XKeycodeToKeysym,_ANSI_ARGS_((Display* d, KeyCode k,
++VFUNC(KeySym,(KeySym (*)(Display *, unsigned int, int))XKeycodeToKeysym,V_XKeycodeToKeysym,_ANSI_ARGS_((Display* d, KeyCode k,
+ 				int i)))
+ #endif /* #ifdef MAC_TCL */
+ #ifdef __WIN32__
+-VFUNC(KeySym,XKeycodeToKeysym,V_XKeycodeToKeysym,_ANSI_ARGS_((Display* d,
++VFUNC(KeySym,(KeySym (*)(Display *, unsigned int, int))XKeycodeToKeysym,V_XKeycodeToKeysym,_ANSI_ARGS_((Display* d,
+ 				unsigned int k, int i)))
+ #endif /* #ifdef __WIN32__ */
+ #endif /* #ifndef XKeycodeToKeysym */

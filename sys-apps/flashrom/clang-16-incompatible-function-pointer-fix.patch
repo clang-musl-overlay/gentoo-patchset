@@ -1,0 +1,22 @@
+--- flashrom-v1.3.0/dummyflasher.c.orig
++++ flashrom-v1.3.0/dummyflasher.c
+@@ -122,7 +122,7 @@
+ 				emu_data->spi_write_256_chunksize);
+ }
+ 
+-static bool dummy_spi_probe_opcode(struct flashctx *flash, uint8_t opcode)
++static bool dummy_spi_probe_opcode(const struct flashctx *flash, uint8_t opcode)
+ {
+ 	size_t i;
+ 	struct emu_data *emu_data = flash->mst->spi.data;
+--- flashrom-v1.3.0/ichspi.c.orig
++++ flashrom-v1.3.0/ichspi.c
+@@ -1661,7 +1661,7 @@
+ 	return ret;
+ }
+ 
+-static bool ich_spi_probe_opcode(struct flashctx *flash, uint8_t opcode)
++static bool ich_spi_probe_opcode(const struct flashctx *flash, uint8_t opcode)
+ {
+ 	return find_opcode(curopcodes, opcode) >= 0;
+ }

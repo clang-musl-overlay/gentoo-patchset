@@ -1,0 +1,14 @@
+diff --git a/utils/v4l2-compliance/v4l2-test-time32-64.cpp b/utils/v4l2-compliance/v4l2-test-time32-64.cpp
+index e175c05..7753170 100644
+--- a/utils/v4l2-compliance/v4l2-test-time32-64.cpp
++++ b/utils/v4l2-compliance/v4l2-test-time32-64.cpp
+@@ -16,8 +16,8 @@
+ 
+ #include <sys/types.h>
+ 
+-#include "compiler.h"
+ #include "v4l2-compliance.h"
++#include "compiler.h"
+ 
+ typedef __s32		old_time32_t;
+ 

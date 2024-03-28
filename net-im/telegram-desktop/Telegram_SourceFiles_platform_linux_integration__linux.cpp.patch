@@ -1,0 +1,10 @@
+--- a/Telegram/SourceFiles/platform/linux/integration_linux.cpp
++++ b/Telegram/SourceFiles/platform/linux/integration_linux.cpp
+@@ -27,6 +27,7 @@ namespace Platform {
+ namespace {
+ 
+ using namespace gi::repository;
++namespace GObject = gi::repository::GObject;
+ 
+ class Application : public Gio::impl::ApplicationImpl {
+ public:

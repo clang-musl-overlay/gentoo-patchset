@@ -1,0 +1,41 @@
+From 86d3f3f03231d25f9cbf18d83aeeccd2225dd246 Mon Sep 17 00:00:00 2001
+From: Nicholas Vinson <nvinson234@gmail.com>
+Date: Wed, 15 May 2024 11:14:54 -0400
+Subject: [PATCH] Conditionally add uuid_time64 to sym. version map
+
+The symbol uuid_time64 is conditionally defined. It only exists on
+32-bit platforms that use the glibc library and enable support for
+the 64-bit time_t type.
+
+For all other platforms, the symbol is undefined. As a result, when
+ld.lld version 17 or newer is used with default flags, ld.lld will
+reject the symbol map with the error:
+
+    version script assignment of 'UUID_2.40' to symbol 'uuid_time64'
+    failed: symbol not defined
+
+To fix this issue, the reference to uuid_time64 is changed to
+uuid_time64*. The change to a glob pattern satisifies ld.lld and allows
+the library to link.
+
+fixes util-linux/util-linux#3036
+fixes Gentoo bug #931328
+
+Signed-off-by: Nicholas Vinson <nvinson234@gmail.com>
+---
+ libuuid/src/libuuid.sym | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/libuuid/src/libuuid.sym b/libuuid/src/libuuid.sym
+index 4c4b4eba2e..774228548a 100644
+--- a/libuuid/src/libuuid.sym
++++ b/libuuid/src/libuuid.sym
+@@ -57,7 +57,7 @@ global:
+  */
+ UUID_2.40 {
+ global:
+-        uuid_time64; /* only on 32bit architectures with 64bit time_t */
++        uuid_time64*; /* only on 32bit architectures with 64bit time_t */
+ } UUID_2.36;
+ 
+ /*
